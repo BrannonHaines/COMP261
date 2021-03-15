@@ -1,0 +1,201 @@
+COMP261 Assignment 3 Report
+
+WHAT MY CODE DOES:
+
+I have implemented the Minimum, Core and Challenge parts of the assignment into my code.
+
+The data structures i used was a Set of Nodes called artPts which stores the articulation points and a Set of Nodes called forest which stores the minimum spanning trees
+ 
+My articulation point method uses the iterative version of the algorithm. It uses 2 methods findArtPts() and findNeighArtPts() and a class
+IterNode which takes a node, integer depth and node parent to help with determining if a node is an articulation point.
+
+My minimum spanning tree method uses Kruskals algorithm and is called findMSTKruskal() and uses 3 helper methods aswell as the disjoint set data structure. The first is called makeSet()
+which takes a node, assigns itself to its parent field thus making it a tree and then adds it to the forest set. The second is called findRoot() which takes a node and finds
+the root of the tree it's connected to and lastly the third is called mergeTrees() which takes two nodes and merges them into one tree.
+
+I've added two GUI buttons called "Find Articulation Points" and "Find Minimum Spanning Tree" which call findArtPts() and findMSTKruskal() respectively in the Mapper class.
+
+Nodes are highlighted red if a node is an articulation point and minimum spanning trees are highlighted green for the edges and red for the nodes
+
+
+ARTICULATION POINT PSEUDOCODE:
+
+public static void findArtPts(){ 
+
+	Intialize artPts to empty and numSubTrees = 0;
+
+	For (each Node in the Graph){
+		Intialize Node.depth and Node.reachBack = Infinity;
+	} 
+	
+	For (each Node in the Graph){
+
+		if (Node.depth is equal to Infinity){
+			Set Node as the Root, Root.depth = 0 and numOfSubTrees = 0;
+
+			For (each adjacent Node neighbour to the Root){
+
+				if (neighbour.depth is equal to Infinity){
+					Call findNeighArtPts(neighbour, 1, Root) and set numOfSubTrees = numOfSubTrees + 1;
+				}
+
+				if (numOfSubTrees is greater than 1){
+					Add Root into artPts;
+				}
+			}
+		}
+	}
+
+	Set the highlighted nodes for the graph to artPts for display;
+}
+
+
+public static void findNeighArtPts(Node node, int depth, Node parent){
+	
+	Intialize a Stack of IterNode with one IterNode(node, depth, parent);
+
+	While (Stack is not empty){
+		Peek the top IterNode of the Stack and expand (currentNode, currentDepth, parentNode) from the the IterNode;
+
+		if (currentNode.depth is equal to Infinity){
+			Set currentNode.depth = currentDepth and currentNode.reachBack = currentDepth;
+
+			For (each adjacent node neighbour to currentNode except the parentNode){
+				Add neighbour into currentNode.children;
+			}
+		}
+		
+		else if (currentNode.children is not empty){
+			Remove a child from currentNode.children;
+
+			if (child.depth is less than Infinity){
+				Set child.reachBack to min(child.depth, currentNode.reachBack);
+			}
+			else{
+				Add a new IterNode(child, currentNode.depth+1, currentNode) into the Stack;
+			}
+		}
+		
+		else{
+			if (currentNode is not equal to the node passed in the parameters){
+				Set parentNode.reachBack = min(currentNode.reachBack, parentNode.reachBack);
+				
+				if (currentNode.reachBack >= parentNode.depth){
+					Add parentNode into artPts;
+				}
+			}
+
+			Remove the expanded node from the Stack;
+		}
+	}
+}
+
+
+MINIMUM SPANNING TREE PSEUDOCODE:
+
+public static void findMSTKruskal(){
+	
+	Intialize forest and tree to a new HashSet of Node and Segment respectively and edges to a PriorityQueue of Segment;
+
+	For (each Node in the Graph){
+		Call makeSet(Node) and add it into the forest;
+	}
+
+	For (each Segment in the Graph){
+		Add Segment into edges;
+	}
+
+	While(edges is not empty){
+		Expand (node1, node2) from the Segment with minimal length;
+		Find the roots of node1 and node2 using findRoot() and store in n1Root and n2Root respectively;
+
+		if (n1Root is not equal to n2Root){
+			Call mergeTrees(node1, node2) and add Segment into tree;
+		}
+	}
+	
+	Set highlighted segments for the graph to tree and highlight all the nodes for display;
+
+}
+
+
+public static Node makeSet(Node node){
+
+	Set node.parent = node and node.depth = 0;
+	return node;
+}
+
+public static Node findRoot(Node node){
+
+	Set a new Node variable called Root = null;
+
+	if (node.parent is equal to node){
+		return node;
+	}
+
+	else{
+		Set Root = findRoot(node.parent);
+		return Root;
+	}
+}
+
+public static void mergeTrees(Node n1, Node n2){
+
+	Set two new Node variables (n1Root, n2Root) = findRoot(n1) and findRoot(n2) respectively;
+
+	if (n1Root.equals(n2Root)){
+		return;
+	}
+
+	else{
+		if (n1Root.depth < n2Root.depth){
+			Set n1Root.parent = n2Root and remove n1Root from forest;
+		}
+
+		else{
+			Set n2Root.parent = n1Root and remove n2Root from forest;
+
+			if (n1Root.depth is equal to n2Root.depth){
+				Increment n1Root.depth by 1;
+			}
+		}
+	}
+}
+
+
+TESTING:
+
+I used a variety of methods for testing, one for articulation points was looking for particular articulation points and checking they did indeed highlight. I used printed out the 
+size of the artPts field to check there was the correct amount of articulation points. For minimum spanning trees i did much of the same, for the small data set i printed out the size
+of the forest to check if it equaled 1 as the small data set is not disconnected. 
+
+QUESTIONS:
+
+ARTICULATION POINTS:
+
+	1. A (Depth = 0, reachBack = 0)
+	   B (Depth = 1, reachBack = 0)
+           C (Depth = 2, reachBack = 2)
+	   E (Depth = 2, reachBack = 0)
+	   D (Depth = 3, reachBack = 0)
+	   G (Depth = 4, reachBack = 4)
+	   H (Depth = 4, reachBack = 4)
+	   F (Depth = 5, reachBack = 4)
+           I (Depth = 6, reachBack = 4)
+           J (Depth = 6, reachBack = 6)
+
+	2. B is an articulation point because there's no alternative path from C to parents
+	   D is an articulation point because there's no alternative path from F, G, H, I, J to parents
+	   H is an articulation point because there's no alternative path from F, I, J to parents
+	   F is an articulation point because there's no alternative path from J to parents
+
+MINIMUM SPANNING TREE:
+
+	1. AD 2
+	   DE 6
+           EF 3
+	   BE 4
+	   BG 1
+   	   BC 2
+ 	   CH 4
+           HI 6
