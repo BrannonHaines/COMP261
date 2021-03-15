@@ -1,0 +1,16 @@
+
+COMP261 Assignment 1: Journey Planner Network
+
+For the Journey Planner Network, I have implemented all the functionalities of the Minimum and Core so the Program has classes for Stops, Connections and Trips.
+It also displays the graph and allows the user to pan and zoom. Stops can be searched in the searchbox and will be highlighted as well as clicked on with the mouse. When a Stop
+is either searched or clicked on, info about the stop will be printed in the text output area.
+
+My program has not implemented the Completion or Challenge functionalities, i made an attempt at the Completion and made a TrieNode and Trie class however i did not
+finish them. The Trie java file is completely blank but the TrieNode java file has some fields, 2 constructors and an incomplete add method.
+
+I used two Hashmaps for storing the stops and trips and a ArrayList for connections. I did store the connections in the stops as recommended using an Adjacency List however
+the ArrayList was primarily used for drawing and redrawing. The code for displaying was much clearer and easier to read by going through the stops values of the map separately 
+then going through the list of connections as opposed to having nested for loops by going through the list of connections for each stop.
+
+The Trip class also had a ArrayList which stored all the stops associated to that trip. This was useful for the onClick and onSearch methods when it came to printing out all the
+trips connected to a stop.   
