@@ -1,0 +1,45 @@
+Brannon Haines
+COMP261 Assignment 5 Report
+
+Question 1.
+
+With my implementation of these two algorithms, i found varying results with Brute Force search being fast than KMP search
+and vice versa however generally more than often the KMP search had a fast search time than the Brute Force search.
+
+Question 2.
+
+The final size of the war and peace text after the Huffman coding algorithm was 1848598 bytes, 
+
+Question 3.
+
+War and Peace had a size reduction of 1,409,648 bytes, Pi had a size reduction of 566,371 bytes and Taisho had
+a size reduction of 2,107,288 bytes.
+
+Based on the total amount of bytes reduced, Taisho had the most bytes reduced with 2,107,288 bytes.
+
+Based on percentage compared with the input size of the file, Taisho had the highest percentage of size reduced with 57.73% of it's total input size
+followed by Pi with 56.08% and lastly War and Peace with 43.26%
+
+Curiously Taisho was larger than War and Peace with an input byte size difference of 391,698 however Taisho's reduction percentage was much higher
+than War and Peace's reduction by roughly 14%. Due to the two texts being in different languages, we could say encoding could be better with different languages
+than others.
+
+Question 4.
+
+Using text War and Peace, I increased the window size to 120 and 160 seperately aswell as reduced the window size to 80 and 40 seperately.
+
+Compressing at window size 100, the character amount was 12,501,166.
+
+After increasing the window size to 120 and 160, the character amount was 12,488,996 and 12,015,222 respectively
+
+Reducing the window size to 80 and 40, the character amount was 12,953,392 and 15,458,921 respectively
+
+So it seems reducing the window size will affect the character amount significantly
+
+Question 5.
+
+Huffman encoding War and Peace and then Lempel-Ziv compression gives a file size of 18,293,816 in terms of characters
+
+Without encoding War and Peace and just performing Lempel-Ziv compression gives a file size of 12,501,166 in terms of characters
+
+So Huffman encoding and then performing Lempel-Ziv compression does not give a smaller file size, at least for the War and Peace text
