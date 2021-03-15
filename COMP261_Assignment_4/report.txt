@@ -1,0 +1,11 @@
+Brannon Haines
+300503495
+
+COMP261 Assignment 4 Report
+
+I have attempted and completed Stage 0, Stage 1 and Stage 2 of the assignment, The nodes are split up into
+seperate packages in regards to what type of node they are (e.g. conditional, sensor etc). My parser seems to work correctly
+with all the stage simple and full files aswell as the bad files in terms of it correctly throws an error. Two prog files in particular
+however pass, s1_bad3.prog and s1_bad4.prog pass due to the later requirement of extending comparisons between all expressions rather
+than just a sensor and number. I'm not sure if these prog files are meant to still fail after implementing stage 2 however i couldn't
+think of a way to implement the stage 2 requirement while still having those prog files throw a parser error 
