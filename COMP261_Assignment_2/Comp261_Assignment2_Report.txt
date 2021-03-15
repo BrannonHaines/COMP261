@@ -1,0 +1,122 @@
+Comp261 Assignment 2 Report
+
+WHAT MY CODE DOES:
+My code has implemented the basic A* Search, this has been implemented in a method in the Mapper class called findShortestPath.
+
+In the onClick method, i have added code that takes the clicked node and adds it to a list. Once the next node is clicked,
+findShortestPath is called with the first and second element of the list storing clicked nodes. In terms of specifying the
+start and end of a route, the first node clicked is highlighted green which indicates the start and the next node clicked is
+highlighted red which indicates the end. There is also a message in the output text area saying click where your route starts/ends.
+
+I have created a Fringe class that helps represent the "path so far" in the A* Search and i have made additions to the Node, Segment
+and Graph class. The Node class i have added two methods (getNeighbours and getSegmentBetweenNodes) and 2 fields (visited, previous).
+The Segment class i have added the getNodeNeighbour method and the Graph class i have added an extra highlighedNode field and code in the draw method that highlights the two starting and ending nodes of a route.
+
+In the Mapper class, i also have a method called getSegments which takes a Fringe object once the A* Search has finished and returns the
+segments along that path.
+
+I have not attempted any Completion and Challenge parts of the Assignment.
+
+PSEUDOCODE OF A* SEARCH:
+
+public void findShortestPath(Node startNode, Node goalNode){
+
+	For (each node value in the Map of nodes){
+		Intialize node fields (visited, previous);
+	}
+
+	The first Fringe object is created with (startNode, null, 0, f(startNode)) and is added to the fringes queue;
+
+	while (fringes is not empty){
+		Expand (currentNode, prevNode, currentCost, totalEstCost) from the Fringe object where totalEstCost is the smallest among all elements in the fringes;
+
+		if (currentNode is not visited){
+			set currentNode as visited and currentNode.previous = prevNode;
+
+			if (currentNode is equal to the goalNode){
+				Return the path from this Fringe object and break;
+			}
+
+			for (each neigh node outgoing from currentNode){
+				if (neigh is not visited){
+					neighCost = currentCost + Segment(neigh, currentNode).length;
+					totalEstNeighCost = neighCost + neigh.distance(goalNode);
+					add new Fringe (neigh, currentNode, neighCost, totalEstNeighCost) into fringes;
+				}
+			}
+		}
+	}
+
+PATH COST AND HEURISTIC ESTIMATE:
+
+My heuristic estimate is the distance from a node to whatever the specified goal node as recommended in the assignment and the path cost is
+the sum of segment lengths up to the current point in the path.
+
+HOW I TESTED MY PROGRAM:
+
+The main way i tested my program was picking a point of the graph, visualizing what the shortest path would be and then clicking the start/end nodes to see if it was the path i visualized.
+I found it very helpful early on as originally the wrong paths were being highlighted with a consistent pattern so with just visualizing and clicking i was able to determine the issue and fix
+it promptly. I also used println statements whenever i was having issues with fields and what values were in those fields  
+
+QUESTION ANSWERS (CORE):
+
+1. A* Search
+
+Step 0: Fringe Elements: {(D, Null, 0, 25)}
+	Element to visit next: (D, Null, 0, 25)
+
+Step 1: Fringe Elements: {(E, D, 10, 26), (F, D, 8, 27), (C, D, 14, 51), (A, D, 15, 53)}
+	Element to visit next: (E, D, 10, 26)
+
+Step 2: Fringe Elements: {(F, D, 8, 27), (H, E, 31, 31), (C, D, 14, 51), (A, D, 15, 53)}
+	Element to visit next: (F, D, 8, 27)
+
+Step 3: Fringe Elements: {(G, F, 18, 19), (H, E, 31, 31), (I, F, 23, 36), (C, D, 14, 51), (A, D, 15, 53)}
+	Element to visit next: (G, F, 18, 19)
+
+Step 4: Fringe Elements: {(H, G, 28, 28), (H, E, 31, 31), (I, F, 23, 36), (I, G, 32, 48), (C, D, 14, 51), (A, D, 15, 53)}
+	Element to visit next: (H, G, 28, 28)
+
+Step 5: The element is taken off the queue and current node is the goal node so path has been found
+	Shortest path: (D, F, G, H) with a path cost of 28
+
+2. 1-to-1 Dijkstra's Algorithm
+
+Step 0: Fringe Elements: {(D, Null, 0)}
+	Element to visit next: (D, Null, 0)
+
+Step 1: Fringe Elements: {(F, D, 8), (E, D, 10), (C, D, 14), (A, D, 15)}
+	Element to visit next: (F, D, 8)
+
+Step 2: Fringe Elements: {(E, D, 10), (C, D, 14), (A, D, 15), (G, F, 18), (I, F, 23)}
+	Element to visit next: (E, D, 10)
+
+Step 3: Fringe Elements: {(C, D, 14), (A, D, 15), (G, F, 18), (I, F, 23), (H, E, 31)}
+	Element to visit next: (C, D, 14)
+
+Step 4: Fringe Elements: {(A, D, 15), (G, F, 18), (B, C, 22), (I, F, 23), (H, E, 31)}
+	Element to visit next: (A, D, 15)
+
+Step 5: Fringe Elements: {(G, F, 18), (B, C, 22), (B, A, 22), (I, F, 23), (H, E, 31)}
+	Element to visit next: (G, F, 18)
+
+Step 6: Fringe Elements: {(B, C, 22), (B, A, 22), (I, F, 23), (H, G, 28), (H, E, 31), (I, G, 32)}
+	Element to visit next: (B, C, 22)
+
+Step 7: Fringe Elements: {(B, A, 22), (I, F, 23), (H, G, 28), (H, E, 31), (I, G, 32)}
+	Element to visit next: (B, A, 22)
+
+Step 8: Fringe Elements: {(I, F, 23), (H, G, 28), (H, E, 31), (I, G, 32)}
+	Element to visit next: (I, F, 23)
+
+Step 9: Fringe Elements: {(H, G, 28), (H, E, 31), (I, G, 32)}
+	Element to visit next: (H, G, 28)
+
+Step 10: The element is taken off the queue and current node is the goal node so path has been found
+	 Shortest path: (D, F, G, H) with a path cost of 28 
+
+3.
+
+The A* Search takes fewer steps than Dijkstra's algorithm due to the extra estimated cost that A* uses. We saw with Dijkstra's just using the costToHere 
+can lead the search to many different nodes that is nowhere near the goal node whereas with A* the estimated cost of how far to go made visiting nodes like A or C never an option
+due to their estimated costs being so high.
